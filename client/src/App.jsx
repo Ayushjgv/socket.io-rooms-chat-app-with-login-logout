@@ -7,26 +7,44 @@ const App = () => {
   const socket=useMemo(()=>io('http://localhost:3000',{
     withCredentials:true,
   }),[]);
-  // const socket=io('http://localhost:3000');
   const [Value, setValue] = useState('');
   const [Room, setRoom] = useState('');
   const [SocketID, setSocketID] = useState('');
   const [Messages, setMessages] = useState([])
   const [JoinRoom, setJoinRoom] = useState('');
   const [User, setUser] = useState(null);
-  const [Username, setUsername] = useState('')
+  const [Username, setUsername] = useState('');
+  const [socketuser, setsocketuser] = useState('');
+  const [Allusers, setAllusers] = useState([]);
+  const [AllRooms, setAllRooms] = useState([]);
+
+
+  let a=[];
 
 
 
-
-
-
-  // console.log(Messages);  
 
   useEffect(() => {
+    
     socket.on('connect', () => {
       setSocketID(socket.id);
       console.log('Connected to server with ID:', socket.id);
+    });
+
+
+    socket.on('user_data', (data) => {
+      console.log('Received user data from server:', data);
+      setsocketuser(data.username);
+    });
+
+    socket.on('allusers', (data) => {
+      console.log('All connected users:', data);
+      setAllusers(data);
+    });
+
+    socket.on('allrooms', (data) => {
+      console.log('All rooms:', data);
+      setAllRooms(data);
     });
 
     socket.on('welcome', (message) => {
@@ -44,32 +62,45 @@ const App = () => {
 
   }, [socket]);
 
+
+  // useEffect(() => {
+  //   fetchusers();
+  // },[]);
+  
+
+
+
+
+
+  // async function fetchusers(){
+  //   const res=await fetch('http://localhost:3000/current_user',{
+  //     method:'GET',
+  //     credentials:'include',
+  //   });
+  //   const data=await res.json();
+  //   console.log('Current user data:',data);
+  //   setAllusers(data);
+  // }
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 async function loginhandler(){
-    // window.location.href='http://localhost:3000/login';
-    // await fetch('http://localhost:3000/login',{
-    //   method:'POST',
-    //   credentials:'include',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     username: Username,
-    //   }),
-    // });
-    // const data=await res.json();
-    // console.log('Login response:',data);
-
 
     if (!Username.trim()) {
       alert('Username required');
       return;
     }
-
-
-
-
     await fetch('http://localhost:3000/login', {
       method: 'POST',
       credentials: 'include',
@@ -77,9 +108,19 @@ async function loginhandler(){
       body: JSON.stringify({ username: Username }),
     });
 
-  setUser(Username);
-  // socket.connect();
+
+    // socket.emit('userconnected',Username);
+
+    a={username:Username,socketID:SocketID};
+    setUser(a);
+    console.log('Logged in as:', a);
+    socket.disconnect();
+    socket.connect();
 }
+
+
+
+
 
 
 
@@ -90,10 +131,15 @@ async function logouthandler(){
     credentials: 'include',
   });
 
-  // socket.disconnect();
+  socket.disconnect();
+  socket.connect();
   console.log('Logged out');
   setUser(null);
 }
+
+
+
+
 
 
 
@@ -103,6 +149,12 @@ async function logouthandler(){
     socket.emit('message',{msg:Value,Room:Room});
     setValue('');
   }
+
+
+
+
+
+
 
 
 
@@ -118,7 +170,8 @@ async function logouthandler(){
 
 
 
-// console.log(socket.user.username);
+
+
 
 
 
@@ -126,7 +179,9 @@ async function logouthandler(){
   return (
     <div className="container">
 
-      <h4>Your Socket ID: {SocketID}</h4>
+      <h4>Your Socket ID: {SocketID},UserName:{socketuser}</h4>
+      <h4>All Users: {Allusers.map((user) => user.username).join(', ')}</h4>
+      <h4>All Rooms: {AllRooms.map((room) => room.username).join(', ')}</h4>
       <form onSubmit={(e)=>{
         e.preventDefault();
       }}>
@@ -156,7 +211,7 @@ async function logouthandler(){
       {Messages.map((m,i)=>{
         return(
           <div className="message">
-            {i}.{m}
+            ={m}
           </div>
         )
       })}
@@ -165,3 +220,4 @@ async function logouthandler(){
 }
 
 export default App
+
