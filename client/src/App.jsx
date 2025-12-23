@@ -179,9 +179,14 @@ async function logouthandler(){
   return (
     <div className="container">
 
-      <h4>Your Socket ID: {SocketID},UserName:{socketuser}</h4>
+      <h4>Your Socket ID: {SocketID}</h4>
+      <h4>Your UserName : {socketuser}</h4>
       <h4>All Users: {Allusers.map((user) => user.username).join(', ')}</h4>
       <h4>All Rooms: {AllRooms.map((room) => room.username).join(', ')}</h4>
+
+
+
+      Login/Logut
       <form onSubmit={(e)=>{
         e.preventDefault();
       }}>
@@ -196,16 +201,24 @@ async function logouthandler(){
         <button type='submit' onClick={logouthandler}>logout</button>
       </form>
 
+
+      Join Room
       <form onSubmit={JoinRoomHandler}>
         <input type="text" value={JoinRoom} onChange={(e)=>setJoinRoom(e.target.value)} placeholder='Enter room name to join' />
         <button type="submit">Join Room</button>
       </form>
 
+      Send Messages
       <form onSubmit={handlesubmit}>
         <input value={Value} onChange={(e)=>setValue(e.target.value)} type="text" placeholder='Enter message' />
-        <input type="text" value={Room} onChange={(e)=>setRoom(e.target.value)} placeholder='Enter room name' />
+        <input type="text" value={Room} onChange={(e)=>setRoom(e.target.value)} placeholder='Enter room/user name' />
         <button type="submit">Send</button>
       </form>
+
+
+      Note!:You have ho reload to check if there are new users connected or new rooms created.
+      Once You Have Logged In You Can See all users and rooms.
+      All usernames must be different.
 
 
       {Messages.map((m,i)=>{

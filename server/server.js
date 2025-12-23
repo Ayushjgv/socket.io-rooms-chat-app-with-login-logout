@@ -18,9 +18,9 @@ app.use(express.json());
 
 let socketID='';
 const secret="qwert";
-let a=[{}];
-let users=[{}];
-let room=[{}];
+let a=[];
+let users=[];
+let room=[];
 
 
 
@@ -148,6 +148,7 @@ app.post('/login',(req,res)=>{
 
 
     if(a.find((u)=>u.username===username)){
+        alert('Username already taken');
         return res.status(400).json({message:"Username already taken"});
     }
 
