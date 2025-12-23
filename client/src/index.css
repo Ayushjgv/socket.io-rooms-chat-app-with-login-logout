@@ -1,15 +1,14 @@
-/* RESET */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* ROOT COLORS */
 :root {
-  --primary: #6366f1;       /* Indigo */
+  --primary: #6366f1;      
   --primary-dark: #4f46e5;
-  --secondary: #22c55e;     /* Green */
+  --secondary: #22c55e;     
   --danger: #ef4444;
   --bg: #f1f5f9;
   --card-bg: #ffffff;
@@ -17,16 +16,12 @@
   --muted: #64748b;
   --border: #e2e8f0;
 }
-
-/* BODY */
 body {
   font-family: "Inter", Arial, Helvetica, sans-serif;
   background: linear-gradient(135deg, #eef2ff, #f8fafc);
   color: var(--text);
   min-height: 100vh;
 }
-
-/* MAIN CONTAINER */
 .container {
   max-width: 900px;
   margin: 40px auto;
@@ -38,15 +33,11 @@ body {
   flex-direction: column;
   gap: 20px;
 }
-
-/* HEADERS */
 h4 {
   font-size: 14px;
   font-weight: 500;
   color: var(--muted);
 }
-
-/* SECTIONS */
 form {
   display: flex;
   gap: 10px;
@@ -56,8 +47,6 @@ form {
   border-radius: 12px;
   border: 1px solid var(--border);
 }
-
-/* INPUTS */
 input {
   flex: 1;
   min-width: 180px;
@@ -77,8 +66,6 @@ input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
-
-/* BUTTONS */
 button {
   padding: 12px 18px;
   border-radius: 10px;
@@ -99,8 +86,6 @@ button:hover {
 button:active {
   transform: scale(0.97);
 }
-
-/* LOGIN / LOGOUT BUTTONS */
 button.logout {
   background: var(--danger);
 }
@@ -108,8 +93,6 @@ button.logout {
 button.logout:hover {
   background: #dc2626;
 }
-
-/* INFO BAR */
 .info {
   background: #eef2ff;
   padding: 12px 15px;
@@ -118,8 +101,6 @@ button.logout:hover {
   color: var(--muted);
   border-left: 4px solid var(--primary);
 }
-
-/* USERS & ROOMS */
 .users,
 .rooms {
   background: #f8fafc;
@@ -128,8 +109,6 @@ button.logout:hover {
   border: 1px solid var(--border);
   font-size: 14px;
 }
-
-/* MESSAGES */
 .message {
   padding: 10px 14px;
   margin-top: 6px;
@@ -139,8 +118,6 @@ button.logout:hover {
   border-left: 4px solid var(--primary);
   animation: fadeIn 0.3s ease;
 }
-
-/* MESSAGE ANIMATION */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -151,8 +128,6 @@ button.logout:hover {
     transform: translateY(0);
   }
 }
-
-/* RESPONSIVE */
 @media (max-width: 600px) {
   .container {
     margin: 20px;

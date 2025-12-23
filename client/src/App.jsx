@@ -21,16 +21,11 @@ const App = () => {
 
   let a=[];
 
-
-
-
   useEffect(() => {
-    
     socket.on('connect', () => {
       setSocketID(socket.id);
       console.log('Connected to server with ID:', socket.id);
     });
-
 
     socket.on('user_data', (data) => {
       console.log('Received user data from server:', data);
@@ -62,41 +57,7 @@ const App = () => {
 
   }, [socket]);
 
-
-  // useEffect(() => {
-  //   fetchusers();
-  // },[]);
-  
-
-
-
-
-
-  // async function fetchusers(){
-  //   const res=await fetch('http://localhost:3000/current_user',{
-  //     method:'GET',
-  //     credentials:'include',
-  //   });
-  //   const data=await res.json();
-  //   console.log('Current user data:',data);
-  //   setAllusers(data);
-  // }
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
 async function loginhandler(){
-
     if (!Username.trim()) {
       alert('Username required');
       return;
@@ -107,10 +68,6 @@ async function loginhandler(){
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: Username }),
     });
-
-
-    // socket.emit('userconnected',Username);
-
     a={username:Username,socketID:SocketID};
     setUser(a);
     console.log('Logged in as:', a);
@@ -118,30 +75,16 @@ async function loginhandler(){
     socket.connect();
 }
 
-
-
-
-
-
-
-
-async function logouthandler(){
-    await fetch('http://localhost:3000/logout', {
-    method: 'GET',
-    credentials: 'include',
-  });
-
-  socket.disconnect();
-  socket.connect();
-  console.log('Logged out');
-  setUser(null);
-}
-
-
-
-
-
-
+  async function logouthandler(){
+      await fetch('http://localhost:3000/logout', {
+      method: 'GET',
+      credentials: 'include',
+    });
+    socket.disconnect();
+    socket.connect();
+    console.log('Logged out');
+    setUser(null);
+  }
 
   function handlesubmit(e){
     e.preventDefault();
@@ -149,14 +92,6 @@ async function logouthandler(){
     socket.emit('message',{msg:Value,Room:Room});
     setValue('');
   }
-
-
-
-
-
-
-
-
 
   function JoinRoomHandler(e){
     e.preventDefault();
@@ -168,29 +103,24 @@ async function logouthandler(){
     }
   }
 
-
-
-
-
-
-
-
-
   return (
     <div className="container">
 
+      {Messages.map((m)=>{
+        return(
+          <div className="message">
+            {m}
+          </div>
+        )
+      })}
       <div className="info">
         Once logged in, you can see all users and rooms.  
         Usernames must be unique.
       </div>
-
       <h4>Your Socket ID: {SocketID}</h4>
       <h4>Your UserName : {socketuser}</h4>
       <h4>All Users: {Allusers.map((user) => user.username).join(', ')}</h4>
       <h4>All Rooms: {AllRooms.map((room) => room.username).join(', ')}</h4>
-
-
-
       Login/Logut
       <form onSubmit={(e)=>{
         e.preventDefault();
@@ -205,34 +135,21 @@ async function logouthandler(){
         <button type='submit' onClick={loginhandler}>login</button>
         <button type='submit' className='logout' onClick={logouthandler}>logout</button>
       </form>
-
-
       Join Room
       <form onSubmit={JoinRoomHandler}>
         <input type="text" value={JoinRoom} onChange={(e)=>setJoinRoom(e.target.value)} placeholder='Enter room name to join' />
         <button type="submit">Join Room</button>
       </form>
-
       Send Messages
       <form onSubmit={handlesubmit}>
         <input value={Value} onChange={(e)=>setValue(e.target.value)} type="text" placeholder='Enter message' />
         <input type="text" value={Room} onChange={(e)=>setRoom(e.target.value)} placeholder='Enter room/user name' />
         <button type="submit">Send</button>
       </form>
-
-
       Note!:You have ho reload to check if there are new users connected or new rooms created.
       Once You Have Logged In You Can See all users and rooms.
       All usernames must be different.
-
-
-      {Messages.map((m)=>{
-        return(
-          <div className="message">
-            {m}
-          </div>
-        )
-      })}
+      
     </div>
   )
 }
