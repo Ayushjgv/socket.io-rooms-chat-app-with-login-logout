@@ -179,6 +179,11 @@ async function logouthandler(){
   return (
     <div className="container">
 
+      <div className="info">
+        Once logged in, you can see all users and rooms.  
+        Usernames must be unique.
+      </div>
+
       <h4>Your Socket ID: {SocketID}</h4>
       <h4>Your UserName : {socketuser}</h4>
       <h4>All Users: {Allusers.map((user) => user.username).join(', ')}</h4>
@@ -198,7 +203,7 @@ async function logouthandler(){
         />
 
         <button type='submit' onClick={loginhandler}>login</button>
-        <button type='submit' onClick={logouthandler}>logout</button>
+        <button type='submit' className='logout' onClick={logouthandler}>logout</button>
       </form>
 
 
@@ -221,10 +226,10 @@ async function logouthandler(){
       All usernames must be different.
 
 
-      {Messages.map((m,i)=>{
+      {Messages.map((m)=>{
         return(
           <div className="message">
-            ={m}
+            {m}
           </div>
         )
       })}
