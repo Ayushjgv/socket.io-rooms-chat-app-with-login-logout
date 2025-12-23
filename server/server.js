@@ -11,6 +11,8 @@ const port=3000;
 const server=http.createServer(app);
 
 
+app.use(express.json());
+
 
 
 
@@ -35,7 +37,7 @@ const io=new Server(server,{
 
 app.use(cors(
     {
-        origin:'*',
+        origin:'http://localhost:5173',
         methods:['GET','POST'],
         credentials:true
     }
@@ -57,7 +59,7 @@ io.use((socket, next) => {
 
         const decoded =jwt.verify(token,secret);
         console.log('Decoded token:',decoded);
-        // socket.user=decoded;
+        socket.user=decoded;
         next();
     });
 
@@ -98,19 +100,23 @@ io.on('connection',(socket)=>{
 
 
 
-app.get('/login',(req,res)=>{
 
-    // const {username} = req.body;
 
-    // const user = { id: Date.now(), username };
 
-    const token=jwt.sign({_id:"qwerfgth"},secret);
 
-    // const token = jwt.sign(
-    //     { userId: user.id, username: user.username },
-    //     secret,
-    //     { expiresIn: '1h' }
-    // );
+
+app.post('/login',(req,res)=>{
+
+    const {username} = req.body;
+    console.log('Login attempt for username:', username);
+    const user = { id: Date.now(), username };
+
+    // const token=jwt.sign({_id:"qwerfgth"},secret);
+
+    const token = jwt.sign(
+        { userId: user.id, username: user.username },
+        secret,
+    );
 
     res.cookie("token",token,{
         httpOnly:true,
@@ -120,6 +126,14 @@ app.get('/login',(req,res)=>{
     res.json({message:"Login successful",token
     });
 });
+
+
+
+
+
+
+
+
 
 app.get('/logout', (req, res) => {
   res.clearCookie('token', {

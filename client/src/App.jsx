@@ -48,30 +48,36 @@ const App = () => {
 
 async function loginhandler(){
     // window.location.href='http://localhost:3000/login';
-    await fetch('http://localhost:3000/login',{
-      method:'GET',
-      credentials:'include'
-    });
+    // await fetch('http://localhost:3000/login',{
+    //   method:'POST',
+    //   credentials:'include',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     username: Username,
+    //   }),
+    // });
     // const data=await res.json();
     // console.log('Login response:',data);
 
 
-    // if (!Username.trim()) {
-    //   alert('Username required');
-    //   return;
-    // }
+    if (!Username.trim()) {
+      alert('Username required');
+      return;
+    }
 
 
 
 
-  //   await fetch('/login', {
-  //   method: 'GET',
-  //   credentials: 'include',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify({ Username }),
-  // });
+    await fetch('http://localhost:3000/login', {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: Username }),
+    });
 
-  // setUser(Username);
+  setUser(Username);
   // socket.connect();
 }
 
